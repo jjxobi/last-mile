@@ -1,0 +1,22 @@
+# raw pulled data is large and easy to regenerate, not checked in
+data/raw/*.parquet
+data/raw/boundaries/
+data/raw/*.log
+
+# R intermediate objects, regenerate with estimate_att.R
+data/processed/*.rds
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
