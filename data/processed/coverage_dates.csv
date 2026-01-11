@@ -1,0 +1,7 @@
+iso3,country,group,treated_quarter
+NGA,Nigeria,treated,2023-Q1
+PHL,Philippines,treated,2023-Q1
+KEN,Kenya,treated,2023-Q3
+IND,India,control,
+VNM,Vietnam,control,
+THA,Thailand,control,
