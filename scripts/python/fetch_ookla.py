@@ -26,7 +26,6 @@ import pyarrow.parquet as pq
 import requests
 from shapely.geometry import shape, Point
 from shapely.strtree import STRtree
-from shapely import wkt as shapely_wkt
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = ROOT / "data" / "raw"
@@ -45,8 +44,24 @@ QUARTER_TO_FILE_MONTH = {1: "01", 2: "04", 3: "07", 4: "10"}
 
 BASE_URL = "https://ookla-open-data.s3.amazonaws.com/parquet/performance/type=fixed"
 
+NE_COUNTRIES_URL = (
+    "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/"
+    "geojson/ne_50m_admin_0_countries.geojson"
+)
+
+
+def ensure_boundaries():
+    if BOUNDARIES_PATH.exists():
+        return
+    print(f"  downloading country boundaries to {BOUNDARIES_PATH}")
+    BOUNDARIES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    r = requests.get(NE_COUNTRIES_URL, timeout=120)
+    r.raise_for_status()
+    BOUNDARIES_PATH.write_bytes(r.content)
+
 
 def load_target_polygons():
+    ensure_boundaries()
     with BOUNDARIES_PATH.open(encoding="utf-8") as f:
         gj = json.load(f)
     polygons = {}
@@ -79,14 +94,21 @@ def download_quarter(year, q):
 
 
 def bbox_prefilter(df, polygons):
-    """Cheap bounding-box cut before the expensive per-row polygon test."""
-    minx = min(p.bounds[0] for p in polygons.values())
-    miny = min(p.bounds[1] for p in polygons.values())
-    maxx = max(p.bounds[2] for p in polygons.values())
-    maxy = max(p.bounds[3] for p in polygons.values())
-    return df[
-        (df.lon >= minx) & (df.lon <= maxx) & (df.lat >= miny) & (df.lat <= maxy)
-    ]
+    """
+    Cheap bounding-box cut before the expensive per-row polygon test. Uses
+    the union of each target country's own bounding box, not one box
+    spanning all of them -- these six countries are spread across Africa
+    and Asia, so a single min/max box would barely filter anything and the
+    polygon test would run on most of the planet's tiles.
+    """
+    mask = pd.Series(False, index=df.index)
+    for poly in polygons.values():
+        minx, miny, maxx, maxy = poly.bounds
+        mask |= (
+            (df.lon >= minx) & (df.lon <= maxx) &
+            (df.lat >= miny) & (df.lat <= maxy)
+        )
+    return df[mask]
 
 
 def assign_country(df, polygons):
@@ -108,24 +130,16 @@ def assign_country(df, polygons):
     return df[df.iso3.notna()]
 
 
-def tile_centroid(tile_wkt):
-    try:
-        return shapely_wkt.loads(tile_wkt).centroid
-    except Exception:
-        return None
-
-
 def process_quarter(year, q, polygons):
     path = download_quarter(year, q)
     print(f"  reading {path.name}")
-    table = pq.read_table(path, columns=["tile", "avg_d_kbps", "avg_u_kbps", "tests", "devices"])
-    df = table.to_pandas()
-
-    centroids = df.tile.apply(tile_centroid)
-    df = df[centroids.notna()]
-    centroids = centroids[centroids.notna()]
-    df["lon"] = centroids.apply(lambda p: p.x)
-    df["lat"] = centroids.apply(lambda p: p.y)
+    # tile_x/tile_y are the tile centroid lon/lat already, confirmed against
+    # a sample file (range -180..180 / -81..81). No need to parse the WKT
+    # 'tile' polygon column at all, which is the expensive part of this file.
+    table = pq.read_table(
+        path, columns=["tile_x", "tile_y", "avg_d_kbps", "avg_u_kbps", "tests", "devices"]
+    )
+    df = table.to_pandas().rename(columns={"tile_x": "lon", "tile_y": "lat"})
 
     df = bbox_prefilter(df, polygons)
     print(f"  {len(df)} tiles in target bounding box, running point-in-polygon")
