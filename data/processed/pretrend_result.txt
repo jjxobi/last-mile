@@ -1,0 +1,4 @@
+earliest_treat_period: 5
+pretrend_interaction_p: 0.9803
+passes_pilot_gate: TRUE
+
