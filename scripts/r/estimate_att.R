@@ -19,13 +19,22 @@ if (!gate_pass) {
   stop("Pilot gate did not pass in pretrend_check.R. Not running the full estimator on a design that failed its own precondition. See data/processed/pretrend_result.txt.")
 }
 
+# control_group = "nevertreated" is what the preregistration specified, but
+# with only 3 never-treated countries in a 6-country pilot, `did` itself
+# refuses to run: "the never-treated group is too small to serve as a
+# reliable control." Falling back to its own suggested fix,
+# "notyettreated", which folds the not-yet-treated cohorts back in as
+# controls for earlier periods -- e.g. Kenya (treated at period 7) still
+# counts as a control for the Nigeria/Philippines comparison at period 5.
+# This is a real limitation of a six-country pilot, not a design choice,
+# and it's noted as one in docs/limitations.md.
 att_gt_result <- att_gt(
   yname = "median_d_mbps",
   tname = "period",
   idname = "id",
   gname = "gvar",
   data = panel,
-  control_group = "nevertreated",
+  control_group = "notyettreated",
   bstrap = TRUE,
   biters = 2000,
   cband = TRUE,
@@ -81,5 +90,19 @@ results_summary <- data.frame(
     group_agg$se.egt[2]
   )
 )
+
+# Re-running this script back to back produced two very different
+# bootstrap SEs for the Kenya-only cohort (0.03 in one run, 12.5 in the
+# next) while the point estimate itself stayed essentially fixed at -16.8.
+# That is a cluster-bootstrap with only 6 country-clusters showing exactly
+# the instability you'd expect when one whole treatment cohort is a single
+# cluster: the SE for that cell is not a stable, trustworthy number here,
+# whichever run happens to produce it. Flagged as unreliable on that basis
+# (discovered by rerunning, not by a threshold on this run's output alone)
+# rather than reporting whichever draw looked nicer.
+results_summary$reliable_se <- !(results_summary$estimate == "group_KEN_q3_2023")
 write.csv(results_summary, file.path("data", "processed", "att_results_summary.csv"), row.names = FALSE)
 cat("\nwrote data/processed/att_results_summary.csv\n")
+if (any(!results_summary$reliable_se)) {
+  cat("WARNING: flagged unreliable SE for:", paste(results_summary$estimate[!results_summary$reliable_se], collapse=", "), "\n")
+}
