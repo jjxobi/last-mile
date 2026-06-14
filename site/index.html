@@ -1,0 +1,200 @@
+<title>Last Mile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Last Mile</div>
+    <h1>Does Starlink actually close the connectivity gap it claims to?</h1>
+    <p class="dek">
+      The last-mile problem is the oldest unsolved problem in telecom
+      economics: it's too expensive to run fiber to too few people.
+      Starlink says it solved that from orbit. This checks that claim
+      against independent speed-test records instead of press releases.
+    </p>
+    <div class="byline">Jesse O'Brien</div>
+  </header>
+
+  <main>
+    <section id="issue">
+      <div class="section-label">The issue</div>
+      <h2>Every rural broadband promise sounds like this one</h2>
+      <p class="lede">
+        For as long as there's been broadband, there's been a "last mile"
+        problem: the final stretch of cable or fiber between a network's
+        backbone and an individual house is the most expensive part to
+        build and the least profitable to run, and it gets worse the more
+        spread out the houses are. Telecoms have been promising to solve it
+        with everything from rural DSL subsidies to WiMAX to geostationary
+        satellite for two decades, and it has stayed mostly unsolved for
+        the same two decades.
+      </p>
+      <p>
+        Starlink's pitch is that low-earth-orbit satellite internet is
+        different: no trench to dig, no pole to plant, just a dish on a
+        roof and a subscription. It has shipped to well over a hundred
+        countries in under five years, and wherever it lands, the same
+        story gets repeated -- speeds that beat whatever DSL or legacy
+        satellite service used to be the only option.
+      </p>
+      <p>
+        Anecdotes like that are easy to find and easy to believe, because
+        they're often true at the individual level: someone who upgrades
+        from a 10-year-old satellite dish to Starlink is going to see a
+        faster number on their own speed test, almost by construction.
+        What's much less checked is whether that individual jump shows up
+        as an aggregate, region-level effect once you control for who
+        adopts and when, using data nobody had a reason to make look good.
+      </p>
+    </section>
+
+    <section id="why-care">
+      <div class="section-label">Why you should care</div>
+      <h2>Because the answer changes what gets funded</h2>
+      <p>
+        Governments and telecom regulators are actively deciding, right
+        now, how much public money to put behind satellite internet versus
+        subsidized fiber buildout for underserved regions. The US alone has
+        tens of billions of dollars in rural broadband subsidy programs
+        where "should this go to fiber or to satellite" is a live
+        allocation question, not a hypothetical one. If Starlink's
+        real-world effect on measured speed is close to what gets claimed
+        in press coverage, that's a legitimate argument for leaning on it
+        more. If the aggregate effect is a lot smaller than the anecdotes
+        suggest, once you strip out who was already going to adopt fastest
+        and what else was changing in the same market at the same time,
+        that's a real reason to be more careful about betting policy
+        dollars on it.
+      </p>
+      <p>
+        This isn't a hit piece looking for a "gotcha," and it isn't a
+        press-release rewrite either. It's the same question a skeptical
+        analyst would ask before recommending a client put money behind the
+        claim: does the number survive contact with independent data.
+      </p>
+    </section>
+
+    <section id="so-what">
+      <div class="section-label">So what does the data say</div>
+      <h2>The setup</h2>
+      <p>
+        Six countries, quarterly, 2022 through 2024. Three got Starlink
+        partway through the window -- Nigeria and the Philippines both in
+        the first quarter of 2023, Kenya in the third quarter of 2023.
+        Three didn't get it at any point in the window -- India, Vietnam,
+        and Thailand, all confirmed still unlicensed or unlaunched years
+        past this panel's end date. The outcome is median fixed-broadband
+        download speed from Ookla's own published Speedtest Open Data,
+        aggregated from tile-level test records, not from anything Starlink
+        or SpaceX published.
+      </p>
+      <p>
+        Because the three treated countries flip at two different times,
+        this isn't a simple before/after comparison -- it uses the
+        Callaway-Sant'Anna staggered-adoption estimator, comparing each
+        treated cohort against the countries that hadn't been treated yet.
+      </p>
+
+      <h2 style="margin-top:56px;">The pilot gate, checked before anything else</h2>
+      <p>
+        Before trusting any estimate out of this design, the treated-to-be
+        countries and the comparison countries need to have been on
+        roughly parallel paths before treatment happened -- otherwise the
+        "effect" the estimator finds could just be pre-existing divergence
+        that had nothing to do with Starlink. That was checked first, with
+        the design and stopping rules committed to in
+        <a href="../docs/preregistration.md">an analysis plan</a>
+        before this panel was pulled.
+      </p>
+
+      <figure>
+        <img src="assets/pretrend.png" alt="Median fixed download speed by country, quarterly, 2022 through 2024">
+        <figcaption>Median fixed download speed by country, quarterly. Dashed line marks the first quarter any pilot country had Starlink available.</figcaption>
+      </figure>
+
+      <div class="callout" id="pilot-gate-result">
+        <div class="callout-label">Pilot gate result</div>
+        <p>{{PILOT_GATE_NARRATIVE}}</p>
+      </div>
+
+      <h2 style="margin-top:56px;">The headline number</h2>
+      <figure>
+        <img src="assets/headline_result.png" alt="Estimated effect of Starlink availability on median download speed, by cohort">
+        <figcaption>Callaway-Sant'Anna ATT estimates, adopter-conditional, 95% confidence intervals.</figcaption>
+      </figure>
+
+      <div class="stat-row" id="headline-stats">
+        <div class="stat">
+          <div class="num">{{OVERALL_ATT}}</div>
+          <div class="label">Overall effect, Mbps (adopter-conditional)</div>
+        </div>
+        <div class="stat">
+          <div class="num">{{NGA_PHL_ATT}}</div>
+          <div class="label">Nigeria &amp; Philippines cohort, Mbps</div>
+        </div>
+        <div class="stat">
+          <div class="num">{{KEN_ATT}}</div>
+          <div class="label">Kenya cohort, Mbps</div>
+        </div>
+      </div>
+
+      <p>{{HEADLINE_NARRATIVE}}</p>
+
+      <figure>
+        <img src="assets/event_study.png" alt="Event study: median download speed relative to Starlink availability, by quarters since treatment">
+        <figcaption>Event-study estimate by quarters since Starlink became available, relative to the quarter before.</figcaption>
+      </figure>
+
+      <h2 style="margin-top:56px;">How fragile is that number</h2>
+      <p>
+        A pre-trend p-value passing is not proof the parallel-trends
+        assumption holds after treatment starts -- it's just the best
+        pre-treatment check available. So this also runs Rambachan &amp;
+        Roth's (2021) sensitivity bounds: how much would a post-treatment
+        trend violation have to exceed the worst pre-treatment deviation
+        actually observed, before the on-impact effect stops being
+        distinguishable from zero.
+      </p>
+      <figure>
+        <img src="assets/sensitivity.png" alt="Rambachan and Roth relative magnitude sensitivity bounds">
+        <figcaption>Relative-magnitude sensitivity bounds on the on-impact event-study coefficient.</figcaption>
+      </figure>
+      <p>{{SENSITIVITY_NARRATIVE}}</p>
+    </section>
+
+    <section id="what-this-is-not">
+      <div class="section-label">What this number is not</div>
+      <h2>The claim this design can actually support</h2>
+      <p>
+        Ookla only has data where someone ran a speed test. A country
+        flipping to "Starlink available" doesn't mean the whole country
+        adopted it -- it means some subset of people who were already
+        unhappy enough with DSL or old-generation satellite to buy a dish,
+        install it, and then also happen to run a speed test. Every number
+        on this page is the answer to <em>"among people who show up in
+        speed-test data after Starlink becomes available, how much faster
+        does the measured median look,"</em> not <em>"how much did the
+        typical household's internet speed change."</em> Those are
+        different claims. Conflating them is exactly the kind of overclaim
+        this project exists to check for, on someone else's claim as much
+        as its own.
+      </p>
+      <p>
+        The full list of what this pilot does and doesn't cover, including
+        a documented but not-yet-run fiber-subsidy competing-intervention
+        check, is in
+        <a href="../docs/limitations.md">the limitations file</a> in the
+        repo, not left for a reader to dig up separately.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Full methodology, sourcing for every treatment date, the
+      analysis plan committed to in advance, and every script that produced
+      the numbers on this page: see the repo. Nothing here that isn't reproducible from
+      it.
+    </p>
+  </footer>
+</div>
