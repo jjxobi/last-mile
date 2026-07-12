@@ -113,8 +113,18 @@
       </figure>
 
       <div class="callout" id="pilot-gate-result">
-        <div class="callout-label">Pilot gate result</div>
-        <p>{{PILOT_GATE_NARRATIVE}}</p>
+        <div class="callout-label">Pilot gate result: pass</div>
+        <p>
+          No statistically distinguishable pre-existing trend between the
+          treated-to-be countries and the comparison countries
+          (interaction p = 0.98, testing a period &times; treated-group
+          term over the pre-treatment quarters only). Worth looking at the
+          chart anyway: Thailand and Vietnam sit on a much higher and
+          steeper baseline than Nigeria and Kenya well before anyone in
+          this panel had Starlink. The slopes weren't statistically
+          different in the pre-period, but the levels were never close --
+          keep that in mind for what follows.
+        </p>
       </div>
 
       <h2 style="margin-top:56px;">The headline number</h2>
@@ -125,25 +135,76 @@
 
       <div class="stat-row" id="headline-stats">
         <div class="stat">
-          <div class="num">{{OVERALL_ATT}}</div>
+          <div class="num">&minus;11.5</div>
           <div class="label">Overall effect, Mbps (adopter-conditional)</div>
         </div>
         <div class="stat">
-          <div class="num">{{NGA_PHL_ATT}}</div>
+          <div class="num">&minus;9.5</div>
           <div class="label">Nigeria &amp; Philippines cohort, Mbps</div>
-        </div>
-        <div class="stat">
-          <div class="num">{{KEN_ATT}}</div>
-          <div class="label">Kenya cohort, Mbps</div>
         </div>
       </div>
 
-      <p>{{HEADLINE_NARRATIVE}}</p>
+      <p>
+        The primary estimate is <strong>&minus;11.5 Mbps overall</strong>
+        (doubly robust, clustered by country, SE in the 6-7 Mbps range
+        across repeated bootstrap runs), and <strong>&minus;9.5 Mbps</strong>
+        for the Nigeria/Philippines cohort specifically. Both confidence
+        intervals sit almost entirely below zero and brush up against it,
+        not comfortably straddling it. Reported as it came out, negative
+        and in the direction a reader would least want to see if they were
+        hoping this project would confirm the marketing story.
+      </p>
+      <p>
+        (Kenya's cohort produced a similar point estimate,
+        around &minus;16.8 Mbps, but re-running the estimator back to back
+        gave wildly different standard errors for that cell -- 0.03 in one
+        run, 12.5 and 6.3 in the next two -- from clustering by country
+        with only six clusters total and one of them carrying an entire
+        treatment cohort by itself. That instability is disclosed rather
+        than hidden behind whichever run looked cleanest, and Kenya's
+        number is left out of the chart above for it.)
+      </p>
 
       <figure>
         <img src="assets/event_study.png" alt="Event study: median download speed relative to Starlink availability, by quarters since treatment">
         <figcaption>Event-study estimate by quarters since Starlink became available, relative to the quarter before.</figcaption>
       </figure>
+
+      <p>
+        The event study is arguably more informative than the single
+        headline number. Pre-treatment estimates hover near zero with wide
+        bands, consistent with the pilot gate passing. On impact (quarter
+        0) the estimate is essentially flat -- no jump. What follows isn't
+        flat: the gap widens quarter over quarter, reaching roughly
+        &minus;20 to &minus;30 Mbps by a year and a half after treatment,
+        though the bands stay wide enough that only the far right of that
+        window clears conventional significance on its own.
+      </p>
+      <div class="callout">
+        <div class="callout-label">The likely explanation, and it isn't that Starlink made things worse</div>
+        <p>
+          Nigeria's own median speed did rise across this panel, from about
+          8 Mbps to about 25 Mbps by the end of 2024 -- a real increase.
+          The reason the causal estimate is negative is that the comparison
+          countries rose faster over the same stretch: Thailand's median
+          went from roughly 183 to 251 Mbps and Vietnam's from roughly 53
+          to 127 Mbps across the same three years, both consistent with
+          well-documented domestic fiber buildouts running at the same
+          time as Starlink's rollout elsewhere. A difference-in-differences
+          design nets out common trends against the comparison group by
+          construction, so a comparison group that happens to be in the
+          middle of its own unrelated broadband boom will pull the
+          estimated "effect" of the thing being studied down, not because
+          the treated countries got worse, but because the design can't
+          tell "Starlink helped a little" apart from "everyone's
+          comparison got a lot better for other reasons" with only six
+          countries and no fiber-buildout control built in yet. This is
+          exactly the competing-intervention confound named in advance in
+          <a href="../docs/limitations.md">the limitations file</a>, now
+          visible in the actual numbers instead of just a theoretical
+          worry.
+        </p>
+      </div>
 
       <h2 style="margin-top:56px;">How fragile is that number</h2>
       <p>
@@ -159,7 +220,20 @@
         <img src="assets/sensitivity.png" alt="Rambachan and Roth relative magnitude sensitivity bounds">
         <figcaption>Relative-magnitude sensitivity bounds on the on-impact event-study coefficient.</figcaption>
       </figure>
-      <p>{{SENSITIVITY_NARRATIVE}}</p>
+      <p>
+        The on-impact estimate is already close to zero (original 95% CI:
+        roughly &minus;5.0 to +5.0 Mbps, assuming exact parallel trends),
+        and it stays centered near zero as the sensitivity bound relaxes --
+        at Mbar = 1, allowing a post-treatment trend violation as large as
+        the worst one actually observed before treatment, the interval
+        widens to roughly &minus;23 to +28 Mbps but is still centered on
+        zero, not anchored to a positive effect that sensitivity is eating
+        away at. There's no fragile positive finding here to protect --
+        the on-impact effect was never distinguishable from zero in the
+        first place, sensitivity bounds or not. The negative overall
+        number comes entirely from what happens in the quarters after
+        impact, shown in the event study above.
+      </p>
     </section>
 
     <section id="what-this-is-not">
@@ -180,9 +254,16 @@
         as its own.
       </p>
       <p>
-        The full list of what this pilot does and doesn't cover, including
-        a documented but not-yet-run fiber-subsidy competing-intervention
-        check, is in
+        Worth being just as blunt about this as everything else on the
+        page: this pilot did not run a formal synthetic-control test isolating the
+        comparison countries' own fiber buildouts from Starlink's effect
+        for Nigeria, the Philippines, or Kenya. What's shown above is
+        Thailand's and Vietnam's raw trajectories looking like exactly the
+        kind of competing intervention that would explain a
+        difference-in-differences estimate coming out negative even while
+        the treated countries' own speeds rose -- a plausible read of the
+        pattern, not a test built to isolate it. The full list of what
+        this pilot does and doesn't cover is in
         <a href="../docs/limitations.md">the limitations file</a> in the
         repo, not left for a reader to dig up separately.
       </p>
