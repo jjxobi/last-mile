@@ -6,6 +6,7 @@
   --line: #ddd6c9;
   --card: #f1ede3;
   --max-w: 720px;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
 }
 
 * {
@@ -16,7 +17,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  font-family: var(--serif);
   line-height: 1.6;
   font-size: 19px;
 }
@@ -33,12 +34,12 @@ header.hero {
 }
 
 .kicker {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 13px;
+  font-family: var(--serif);
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 16px;
   color: var(--accent);
-  font-weight: 600;
+  font-style: italic;
   margin-bottom: 18px;
 }
 
@@ -52,14 +53,16 @@ h1 {
 .dek {
   font-size: 21px;
   color: var(--muted);
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-style: italic;
   font-weight: 400;
   max-width: 620px;
 }
 
 .byline {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 14px;
+  font-family: var(--serif);
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 16px;
   color: var(--muted);
   margin-top: 28px;
 }
@@ -74,12 +77,11 @@ main section:last-of-type {
 }
 
 .section-label {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 13px;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  font-size: 17px;
   color: var(--muted);
-  font-weight: 600;
+  font-style: italic;
   margin-bottom: 8px;
 }
 
@@ -110,46 +112,60 @@ figure img {
 }
 
 figcaption {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 15px;
+  font-style: italic;
   color: var(--muted);
   margin-top: 10px;
 }
 
 .stat-row {
   display: flex;
-  gap: 20px;
+  gap: 1px;
   flex-wrap: wrap;
-  margin: 32px 0;
+  margin: 36px 0;
+  background: var(--line);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
 
 .stat {
   flex: 1 1 200px;
-  background: var(--card);
-  padding: 20px 22px;
-  border-left: 3px solid var(--accent);
+  background: var(--paper);
+  padding: 22px 6px 6px;
+  text-align: center;
 }
 
 .stat .num {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 30px;
+  font-family: var(--serif);
+  font-size: 34px;
   font-weight: 700;
   line-height: 1;
+  color: var(--accent);
 }
 
 .stat .label {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 13px;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 15px;
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .callout {
   background: var(--card);
-  padding: 24px 26px;
+  padding: 28px 30px;
   margin: 32px 0;
-  border-left: 3px solid var(--accent);
   font-size: 17px;
+  position: relative;
+}
+
+.callout::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin-bottom: 16px;
 }
 
 .callout p:last-child {
@@ -157,12 +173,11 @@ figcaption {
 }
 
 .callout .callout-label {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-variant: small-caps;
+  font-size: 16px;
+  letter-spacing: 0.04em;
   color: var(--accent);
-  font-weight: 700;
+  font-style: italic;
   margin-bottom: 10px;
 }
 
@@ -192,8 +207,8 @@ a:hover {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 15px;
+  font-family: var(--serif);
+  font-size: 16px;
   margin: 24px 0;
 }
 
@@ -206,15 +221,14 @@ th, td {
 th {
   color: var(--muted);
   font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
 }
 
 footer {
   padding: 48px 0 96px;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  font-size: 14px;
+  font-size: 15px;
+  font-style: italic;
   color: var(--muted);
 }
 
