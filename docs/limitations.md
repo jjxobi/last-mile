@@ -16,6 +16,20 @@ countries by construction. That is a read of the pattern, not a test that
 isolates it -- the synthetic-control check described below still hasn't
 been built.
 
+## Second note, after checking that explanation instead of just asserting it
+
+Dropping Thailand and Vietnam from the comparison pool and re-running the
+identical design against India alone (`scripts/r/robustness_narrow_control.R`)
+moves the overall estimate from -11.5 Mbps to +1.9 Mbps, and the
+Nigeria/Philippines cohort specifically to +4.2 Mbps with a standard error
+that reproduced identically across six separate reruns, unlike the Kenya
+cell in the primary spec which did not. So the competing-intervention
+explanation above isn't just a plausible read of the pattern anymore --
+checking it moved the number in the direction that explanation implies. It
+is still a four-country panel with a single never-treated comparator, and
++4.2 Mbps for one cohort is a modest, adopter-conditional shift, not a
+transformative one.
+
 ## This measures an adopter-conditional effect, not a population-average one
 
 Ookla tiles only exist where someone ran a speed test. A country flipping

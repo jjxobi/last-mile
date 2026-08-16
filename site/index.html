@@ -234,6 +234,53 @@
         number comes entirely from what happens in the quarters after
         impact, shown in the event study above.
       </p>
+
+      <h2 style="margin-top:56px;">Checking that explanation instead of just asserting it</h2>
+      <p>
+        A theory about why an estimate came out negative is worth nothing
+        until it's checked against the same data. So: drop Thailand and
+        Vietnam from the comparison pool entirely and re-run the identical
+        design with India as the only never-treated country left.
+        If the fiber-buildout explanation is right, the estimate should
+        move toward positive. If it's wrong, or India alone is a bad
+        comparison for some other reason, it shouldn't.
+      </p>
+      <figure>
+        <img src="assets/robustness_narrow_control.png" alt="Robustness check event study with Thailand and Vietnam dropped from the comparison pool">
+        <figcaption>Same design, India-only never-treated control. A diagnostic, not a replacement for the primary estimate above.</figcaption>
+      </figure>
+      <p>
+        It moved. The overall estimate flips from &minus;11.5 Mbps
+        (primary, six-country) to <strong>+1.9 Mbps</strong> with Thailand
+        and Vietnam excluded -- checked six times back to back given how
+        the Kenya cell above turned out to be numerically unstable, and
+        this overall number's standard error moved around somewhat run to
+        run (1.4 to 3.2 Mbps across six checks so far) but the interval
+        straddled zero in every single one. Broken out by cohort, the Nigeria/Philippines group alone
+        comes back at <strong>+4.2 Mbps</strong>, and unlike the Kenya cell,
+        this one's standard error (0.73) reproduced identically across all
+        six reruns rather than swinging around, so the "the CI doesn't
+        cover zero" read on it looks like a real feature of this thinner
+        design rather than a bootstrap artifact. Kenya's own comparison
+        against India alone comes back negative (&minus;4.2 Mbps) but with
+        an uncomputable standard error, so this narrower design has nothing
+        reliable to say about Kenya either way.
+      </p>
+      <p>
+        Worth reading that plainly rather than rounding it up to "so
+        Starlink works after all." A confounded control group was a
+        specific, named, checkable explanation for the negative primary
+        result, and checking it did shift the number the direction that
+        explanation implies -- that's real and worth reporting. But +4.2
+        Mbps for one cohort, on a four-country panel with a single
+        never-treated comparator, is a modest, adopter-conditional shift,
+        not the kind of transformation the marketing story around Starlink
+        would suggest, and it rests on the assumption that India alone is
+        a valid comparison for Nigeria and the Philippines, which hasn't
+        been checked here beyond the pre-trend test passing (p = 0.78, on
+        a single treated-country-worth of pre-period slope, so a much less
+        demanding test than the six-country version above).
+      </p>
     </section>
 
     <section id="what-this-is-not">

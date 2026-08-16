@@ -8,9 +8,11 @@ word.
 Full write-up: `site/index.html` (open it directly in a browser, or serve
 the `site/` folder).
 
-Short version: the primary estimate came back negative. Full explanation,
-including the most likely reason why, is in the write-up -- not summarized
-further here because it needs the context to not be misread.
+Short version: the primary estimate came back negative, and checking the
+most likely explanation (a confounded comparison group) moved it to a
+small positive cohort-level number. Full explanation, including the most
+likely reason why, is in the write-up -- not summarized further here
+because it needs the context to not be misread.
 
 ## What this is
 
@@ -39,6 +41,7 @@ Rscript scripts/r/pretrend_check.R         # pilot gate -- must pass before the 
 Rscript scripts/r/estimate_att.R
 Rscript scripts/r/sensitivity_honestdid.R
 Rscript scripts/r/make_plots.R
+Rscript scripts/r/robustness_narrow_control.R   # diagnostic: same design, Thailand + Vietnam dropped from controls
 ```
 
 `fetch_ookla.py` downloads one global quarterly file at a time (~350MB
