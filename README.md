@@ -42,6 +42,7 @@ Rscript scripts/r/estimate_att.R
 Rscript scripts/r/sensitivity_honestdid.R
 Rscript scripts/r/make_plots.R
 Rscript scripts/r/robustness_narrow_control.R   # diagnostic: same design, Thailand + Vietnam dropped from controls
+Rscript scripts/r/robustness_sensitivity_honestdid.R   # sensitivity check on the robustness estimate
 ```
 
 `fetch_ookla.py` downloads one global quarterly file at a time (~350MB

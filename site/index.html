@@ -281,6 +281,29 @@
         a single treated-country-worth of pre-period slope, so a much less
         demanding test than the six-country version above).
       </p>
+
+      <figure>
+        <img src="assets/robustness_sensitivity.png" alt="Rambachan and Roth relative magnitude sensitivity bounds on the robustness estimate">
+        <figcaption>Same Rambachan-Roth sensitivity check as the primary estimate got, run against the India-only-control on-impact coefficient.</figcaption>
+      </figure>
+
+      <p>
+        Ran the same Rambachan-Roth sensitivity check against this estimate
+        that the primary one got, and it matters which number gets checked.
+        The +4.2 Mbps that held up across six reruns is the
+        <em>group</em> aggregate -- the average effect across every
+        post-treatment quarter for the Nigeria/Philippines cohort. The
+        sensitivity check runs on the <em>on-impact</em> coefficient (the
+        first treated quarter alone), which was already not distinguishable
+        from zero even under the strict original assumption (95% CI
+        roughly &minus;1.1 to +7.5 Mbps) and stays centered near zero as
+        the bound relaxes, same pattern as the primary estimate's
+        sensitivity check above. So there's no fragile "on impact" finding
+        here to protect either. What actually moved was the slower,
+        cumulative gap across the later post-treatment quarters, not a
+        first-quarter jump -- worth knowing before quoting the +4.2 number
+        as if it were a clean, immediate effect.
+      </p>
     </section>
 
     <section id="what-this-is-not">

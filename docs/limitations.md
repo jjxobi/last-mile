@@ -30,6 +30,14 @@ is still a four-country panel with a single never-treated comparator, and
 +4.2 Mbps for one cohort is a modest, adopter-conditional shift, not a
 transformative one.
 
+Ran the Rambachan-Roth sensitivity check
+(`scripts/r/robustness_sensitivity_honestdid.R`) against this estimate too.
+It runs on the on-impact coefficient specifically, not the +4.2 group
+aggregate -- and the on-impact effect here was never distinguishable from
+zero to begin with (original 95% CI roughly -1.1 to +7.5 Mbps), same as the
+primary estimate's on-impact coefficient. The +4.2 Mbps that survived six
+reruns is a cumulative effect across the later post-treatment quarters, not
+a first-quarter jump.
 ## This measures an adopter-conditional effect, not a population-average one
 
 Ookla tiles only exist where someone ran a speed test. A country flipping
