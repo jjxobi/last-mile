@@ -42,9 +42,14 @@ treatment isn't a single date: Nigeria and the Philippines both flip in
 cohorts," which is exactly the staggered-adoption setting the estimator is
 built for rather than a plain two-period diff-in-diff.
 
-Never-treated control group (`control_group = "nevertreated"`), universal
-base period (required for the HonestDiD sensitivity step downstream),
-clustered by country, 2000 bootstrap iterations for inference.
+`control_group = "notyettreated"` -- with only three never-treated
+countries in a six-country panel, `did` refuses to run against
+`"nevertreated"` (its own check, not a judgment call made here) and
+recommends this fallback, which folds not-yet-treated cohorts back in as
+controls for earlier periods (Kenya still counts as a control for Nigeria
+and the Philippines before Kenya's own treatment quarter). Universal base
+period (required for the HonestDiD sensitivity step downstream), clustered
+by country, 2000 bootstrap iterations for inference.
 
 ## Two data-engineering choices worth being explicit about
 

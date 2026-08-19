@@ -63,11 +63,10 @@ dates, not a global backfill. The pipeline in `scripts/python/fetch_ookla.py`
 isn't hardcoded to just these six past the `TARGET_ISO3` list at the top of
 the file, but scaling it up means reconstructing a sourced treatment date
 for every additional country first (see `docs/sources.md` for what that
-took here), and a real check against competing fiber-subsidy rollouts
-(RDOF/BEAD-style programs) for a US/Canada county-level cut, which the
-original scope called for and this pilot doesn't include. Both are the
-obvious next steps, not secretly-abandoned ones -- see
-`docs/limitations.md`.
+took here). A real check against competing fiber-subsidy rollouts
+(RDOF/BEAD-style programs, using public US/Canada award data) also isn't
+built yet. Both are the obvious next steps, not secretly-abandoned ones --
+see `docs/limitations.md`.
 
 ## Layout
 

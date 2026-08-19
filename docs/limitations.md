@@ -109,9 +109,9 @@ Starlink: a government fiber subsidy program landing in the same country in
 the same years, a currency shock changing what ISPs can afford to import,
 a mobile carrier's own network upgrade. None of the three treated countries
 here (Nigeria, Philippines, Kenya) were cross-checked against a documented
-subsidized-fiber rollout schedule the way the original project brief
-specified for a US/Canada RDOF/BEAD angle -- that cross-check is
-US/Canada-specific public data and wasn't built for this pilot. Its absence
+subsidized-fiber rollout schedule -- that kind of check exists for the US
+and Canada specifically (RDOF and BEAD award data are public) but nothing
+equivalent was built for Nigeria, the Philippines, or Kenya. Its absence
 here is a real gap, not a solved problem, and it's the first thing that
 should be added before trusting this design at country scale.
 

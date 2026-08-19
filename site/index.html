@@ -256,8 +256,9 @@
         the Kenya cell above turned out to be numerically unstable, and
         this overall number's standard error moved around somewhat run to
         run (1.4 to 3.2 Mbps across six checks so far) but the interval
-        straddled zero in every single one. Broken out by cohort, the Nigeria/Philippines group alone
-        comes back at <strong>+4.2 Mbps</strong>, and unlike the Kenya cell,
+        straddled zero in every single one. Broken out by cohort, the
+        Nigeria/Philippines group alone comes back at
+        <strong>+4.2 Mbps</strong>, and unlike the Kenya cell,
         this one's standard error (0.73) reproduced identically across all
         six reruns rather than swinging around, so the "the CI doesn't
         cover zero" read on it looks like a real feature of this thinner
@@ -396,15 +397,14 @@
       </p>
       <p>
         Worth being just as blunt about this as everything else on the
-        page: this pilot did not run a formal synthetic-control test isolating the
-        comparison countries' own fiber buildouts from Starlink's effect
-        for Nigeria, the Philippines, or Kenya. What's shown above is
-        Thailand's and Vietnam's raw trajectories looking like exactly the
-        kind of competing intervention that would explain a
-        difference-in-differences estimate coming out negative even while
-        the treated countries' own speeds rose -- a plausible read of the
-        pattern, not a test built to isolate it. The full list of what
-        this pilot does and doesn't cover is in
+        page: dropping Thailand and Vietnam entirely is a blunt fix for the
+        competing-fiber-buildout problem, not a precise one. A proper
+        synthetic-control test would weight comparison countries to match
+        Nigeria's and the Philippines' pre-treatment trends as closely as
+        possible, rather than just removing the two countries that looked
+        most like the confound and hoping what's left is clean. That more
+        careful version hasn't been built. The full list of what this
+        pilot does and doesn't cover is in
         <a href="../docs/limitations.md">the limitations file</a> in the
         repo, not left for a reader to dig up separately.
       </p>
