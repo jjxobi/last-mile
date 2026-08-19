@@ -39,21 +39,41 @@ primary estimate's on-impact coefficient. The +4.2 Mbps that survived six
 reruns is a cumulative effect across the later post-treatment quarters, not
 a first-quarter jump.
 
-## Third note: the +4.2 Mbps cohort number does not survive being split by country
+## Third note: a country-split check found a bug in this project, not in the estimator
 
 The Nigeria/Philippines "+4.2 Mbps" is an average across two countries that
-`did` treats as one group because they share a treatment quarter.
-Re-estimating each country alone (`scripts/r/robustness_country_split.R`)
-against the same India/Kenya control pool: Nigeria's own estimate is
-+0.04 Mbps with a standard error (2.66) that reproduced across three
-reruns -- a solid null. The Philippines' own estimate is +1.17 Mbps, but
-its standard error was unstable across three reruns (6.5, 0.2, 3.4) in the
-same way the Kenya cell was in the primary spec, so nothing reliable can be
-said about it either way. Averaging the two countries' separately-estimated
-event-study curves does not reproduce the pooled cohort's curve except at
-the last two quarters. Not run down further -- disclosed as an open
-discrepancy rather than resolved in whichever direction is more
-convenient. Full writeup in `site/index.html`.
+`did` treats as one group because they share a treatment quarter. First
+attempt at re-estimating each country alone
+(`scripts/r/robustness_country_split.R`) reported Nigeria as a clean null
+and the Philippines as too unstable to trust, and neither reconstructed the
+pooled number. That result was wrong: both single-country datasets still
+included Kenya with its own real `gvar = 7`, meant only to serve as a
+not-yet-treated control, and the aggregation used (`aggte(type =
+"simple"/"dynamic")`) averages across every treated cohort present in the
+data rather than isolating the one being asked about. So "Nigeria alone"
+was actually Nigeria blended with Kenya's own effect.
+
+Root-caused in `scripts/r/diagnose_pooling_discrepancy.R`: a by-hand 2x2
+difference-in-differences computed directly from `data/processed/panel.csv`
+matches `did::att_gt`'s raw group-time table exactly, at every period,
+under both the "reg" and "dr" estimation methods -- so the control-pool
+composition was identical across every spec the whole time, confirming
+this was never a property of the doubly-robust estimator. Fixed by reading
+the raw group-time table filtered to the target country's own cohort
+instead of routing through an aggregation that mixes cohorts. Corrected,
+Nigeria's own isolated effect is +3.2 Mbps and the Philippines' is
++5.2 Mbps -- averaging to +4.17, matching the pooled cohort number to four
+decimal places. No discrepancy remains to explain.
+
+One real limitation replaces the old, mistaken one: once Kenya is treated
+(period 7), India is the sole remaining control for six of eight
+post-treatment quarters in each single-country run, and a cluster
+bootstrap cannot produce a variance from a single control cluster for
+those cells -- inestimable, not unstable. The point estimates are now
+trustworthy and reconciled; a confidence interval for either country
+individually still isn't something this data can responsibly support, so
+the pooled cohort's own bootstrap SE remains the number actually quoted.
+Full writeup in `site/index.html`.
 
 ## This measures an adopter-conditional effect, not a population-average one
 

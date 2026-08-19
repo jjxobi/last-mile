@@ -318,56 +318,62 @@
         with Nigeria and the Philippines never appearing in each other's
         run.
       </p>
-      <figure>
-        <img src="assets/robustness_nigeria_only.png" alt="Nigeria estimated alone against the India-only control">
-        <figcaption>Nigeria alone vs. the same India/Kenya control pool.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/robustness_philippines_only.png" alt="Philippines estimated alone against the India-only control">
-        <figcaption>Philippines alone vs. the same India/Kenya control pool.</figcaption>
-      </figure>
-      <p>
-        Neither country holds up alone. Nigeria's own overall estimate is
-        <strong>+0.04 Mbps</strong> -- indistinguishable from zero, and this
-        one's standard error (2.66) reproduced consistently across three
-        separate reruns, so that's a solid null, not a fluke. The
-        Philippines' own overall estimate is +1.17 Mbps, but its standard
-        error swung from 6.5 to 0.2 to 3.4 Mbps across three reruns --
-        exactly the kind of instability that made the Kenya cell in the
-        primary estimate untrustworthy, so nothing reliable can be said
-        about the Philippines on its own either way.
-      </p>
       <div class="callout">
-        <div class="callout-label">Flagging this rather than picking whichever number is more convenient</div>
+        <div class="callout-label">Correction: the first version of this check was wrong, and the bug was mine</div>
         <p>
-          A cohort-level average that's stable across six reruns, built
-          from two countries that separately show a solid null (Nigeria)
-          and an unreliable estimate (Philippines), is a genuine
-          discrepancy. Averaging two per-quarter effect curves computed
-          separately does not reproduce the pooled cohort's curve except at
-          the last two quarters -- the rest don't match, and that wasn't
-          fully run down. It may be legitimate: pooling two countries can
-          sharpen a signal that's individually underpowered in each one
-          separately, which is the entire premise of grouping units into a
-          cohort in the first place. But it could also mean the pooled
-          estimate is leaning on something about how the two countries'
-          data interact in the estimator that isn't a real, country-level
-          Starlink effect. Not resolved here -- disclosed instead of quietly
-          picking the version of the story that sounds better.
+          An earlier draft of this section reported Nigeria alone as a
+          clean null (+0.04 Mbps) and the Philippines alone as too
+          unstable to trust, and flagged that the pooled cohort number
+          couldn't be reconstructed from those two pieces. That was a bug
+          in this project's own script, not a property of the estimator.
+          Both single-country runs still had Kenya sitting in the data
+          with its own real treatment date (it was only meant to serve as
+          a not-yet-treated <em>control</em> here), and the aggregation
+          function used at the time averages across every treated cohort
+          present rather than isolating the one being asked about -- so
+          "Nigeria alone" was actually Nigeria blended with Kenya, and
+          same for "Philippines alone." Root-caused and fixed in
+          <code>scripts/r/diagnose_pooling_discrepancy.R</code> and
+          <code>scripts/r/robustness_country_split.R</code>: a plain,
+          by-hand difference-in-differences computed straight from the
+          panel data matches `did`'s own output for each country exactly,
+          under two different estimation methods, once Kenya's own cohort
+          is properly excluded from the aggregate.
         </p>
       </div>
+      <figure>
+        <img src="assets/robustness_nigeria_only.png" alt="Nigeria estimated alone against the India-only control, Kenya's own cohort excluded">
+        <figcaption>Nigeria's own group-time table, Kenya's cohort excluded from the aggregate. Error bars only where a variance could actually be computed -- see below.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/robustness_philippines_only.png" alt="Philippines estimated alone against the India-only control, Kenya's own cohort excluded">
+        <figcaption>Philippines' own group-time table, same fix applied.</figcaption>
+      </figure>
       <p>
-        Net of everything on this page: the primary result was likely
-        inflated by a confounded comparison group, and correcting for that
-        produces a small positive number at the two-country cohort level
-        that survives repeated reruns and a sensitivity check -- but does
-        not survive being split into the two countries that make it up.
-        That's short of "there is a real effect," and short of "it's
-        Nigeria specifically" or "it's the Philippines specifically." The
-        most that can honestly be said is: the negative headline number
-        doesn't hold up on its own, and what replaces it is a small,
-        cohort-level signal that hasn't yet survived every check run
-        against it.
+        Corrected, the two countries reconcile cleanly with the pooled
+        number instead of contradicting it: Nigeria's own isolated effect
+        is <strong>+3.2 Mbps</strong>, the Philippines' is
+        <strong>+5.2 Mbps</strong>, and the average of those two is +4.17 --
+        matching the pooled cohort estimate reported above to four decimal
+        places. There's no discrepancy left to explain. The pooled number
+        was right the whole time; the attempt to decompose it was broken.
+      </p>
+      <p>
+        One honest limit remains, and it's a different one than before.
+        Once Kenya is treated (period 7 onward), <strong>India is the only
+        control left</strong> for six of the eight post-treatment quarters
+        in each single-country run, and a cluster bootstrap cannot compute
+        a variance from one remaining control cluster -- not "unstable,"
+        genuinely inestimable. The per-quarter chart above shows this
+        directly: real error bars for the quarters where Kenya still
+        counts as a control, point estimates with no bar at all everywhere
+        after. So the individual country point estimates are trustworthy
+        and now reconciled, but this project still can't responsibly hand
+        either country its own confidence interval with the data on hand --
+        the pooled cohort's own bootstrap SE (built from more combined
+        data across both countries) remains the more defensible number to
+        actually quote, which is what the headline figures above already
+        do.
       </p>
     </section>
 

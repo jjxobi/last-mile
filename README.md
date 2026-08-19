@@ -10,10 +10,12 @@ the `site/` folder).
 
 Short version: the primary estimate came back negative, and checking the
 most likely explanation (a confounded comparison group) moved it to a
-small positive cohort-level number -- and that cohort number doesn't
-survive being split into its two countries either, which is disclosed
-rather than papered over. Full explanation is in the write-up -- not
-summarized further here because it needs the context to not be misread.
+small positive cohort-level number. A first attempt to check that number
+by splitting it into its two countries reported a discrepancy that turned
+out to be a bug in this project's own script, not the estimator -- fixed
+and reconciled, see `docs/limitations.md` for what that actually was. Full
+explanation is in the write-up -- not summarized further here because it
+needs the context to not be misread.
 
 ## What this is
 
@@ -45,6 +47,7 @@ Rscript scripts/r/make_plots.R
 Rscript scripts/r/robustness_narrow_control.R   # diagnostic: same design, Thailand + Vietnam dropped from controls
 Rscript scripts/r/robustness_sensitivity_honestdid.R   # sensitivity check on the robustness estimate
 Rscript scripts/r/robustness_country_split.R    # does the robustness estimate hold up per country, not just pooled
+Rscript scripts/r/diagnose_pooling_discrepancy.R   # one-off: by-hand check of the country-split arithmetic
 ```
 
 `fetch_ookla.py` downloads one global quarterly file at a time (~350MB
