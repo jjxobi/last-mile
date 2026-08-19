@@ -38,6 +38,23 @@ zero to begin with (original 95% CI roughly -1.1 to +7.5 Mbps), same as the
 primary estimate's on-impact coefficient. The +4.2 Mbps that survived six
 reruns is a cumulative effect across the later post-treatment quarters, not
 a first-quarter jump.
+
+## Third note: the +4.2 Mbps cohort number does not survive being split by country
+
+The Nigeria/Philippines "+4.2 Mbps" is an average across two countries that
+`did` treats as one group because they share a treatment quarter.
+Re-estimating each country alone (`scripts/r/robustness_country_split.R`)
+against the same India/Kenya control pool: Nigeria's own estimate is
++0.04 Mbps with a standard error (2.66) that reproduced across three
+reruns -- a solid null. The Philippines' own estimate is +1.17 Mbps, but
+its standard error was unstable across three reruns (6.5, 0.2, 3.4) in the
+same way the Kenya cell was in the primary spec, so nothing reliable can be
+said about it either way. Averaging the two countries' separately-estimated
+event-study curves does not reproduce the pooled cohort's curve except at
+the last two quarters. Not run down further -- disclosed as an open
+discrepancy rather than resolved in whichever direction is more
+convenient. Full writeup in `site/index.html`.
+
 ## This measures an adopter-conditional effect, not a population-average one
 
 Ookla tiles only exist where someone ran a speed test. A country flipping

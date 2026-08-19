@@ -304,6 +304,71 @@
         first-quarter jump -- worth knowing before quoting the +4.2 number
         as if it were a clean, immediate effect.
       </p>
+      <h2 style="margin-top:56px;">Is that +4.2 Mbps really one effect, or two different countries averaged together</h2>
+      <p>
+        The Nigeria/Philippines "+4.2 Mbps" is a cohort-level number --
+        `did` treats both countries as one group because they got Starlink
+        in the same calendar quarter, and averages across them. Their raw
+        trajectories don't look alike: Nigeria's speed is flat before
+        treatment and climbs steadily afterward, while the Philippines had
+        already nearly doubled in the year <em>before</em> Starlink arrived
+        and mostly plateaus after. That's worth running as its own
+        question, not eyeballing off a chart -- so each country was
+        re-estimated on its own against the same India/Kenya control pool,
+        with Nigeria and the Philippines never appearing in each other's
+        run.
+      </p>
+      <figure>
+        <img src="assets/robustness_nigeria_only.png" alt="Nigeria estimated alone against the India-only control">
+        <figcaption>Nigeria alone vs. the same India/Kenya control pool.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/robustness_philippines_only.png" alt="Philippines estimated alone against the India-only control">
+        <figcaption>Philippines alone vs. the same India/Kenya control pool.</figcaption>
+      </figure>
+      <p>
+        Neither country holds up alone. Nigeria's own overall estimate is
+        <strong>+0.04 Mbps</strong> -- indistinguishable from zero, and this
+        one's standard error (2.66) reproduced consistently across three
+        separate reruns, so that's a solid null, not a fluke. The
+        Philippines' own overall estimate is +1.17 Mbps, but its standard
+        error swung from 6.5 to 0.2 to 3.4 Mbps across three reruns --
+        exactly the kind of instability that made the Kenya cell in the
+        primary estimate untrustworthy, so nothing reliable can be said
+        about the Philippines on its own either way.
+      </p>
+      <div class="callout">
+        <div class="callout-label">Flagging this rather than picking whichever number is more convenient</div>
+        <p>
+          A cohort-level average that's stable across six reruns, built
+          from two countries that separately show a solid null (Nigeria)
+          and an unreliable estimate (Philippines), is a genuine
+          discrepancy. Averaging two per-quarter effect curves computed
+          separately does not reproduce the pooled cohort's curve except at
+          the last two quarters -- the rest don't match, and that wasn't
+          fully run down. It may be legitimate: pooling two countries can
+          sharpen a signal that's individually underpowered in each one
+          separately, which is the entire premise of grouping units into a
+          cohort in the first place. But it could also mean the pooled
+          estimate is leaning on something about how the two countries'
+          data interact in the estimator that isn't a real, country-level
+          Starlink effect. Not resolved here -- disclosed instead of quietly
+          picking the version of the story that sounds better.
+        </p>
+      </div>
+      <p>
+        Net of everything on this page: the primary result was likely
+        inflated by a confounded comparison group, and correcting for that
+        produces a small positive number at the two-country cohort level
+        that survives repeated reruns and a sensitivity check -- but does
+        not survive being split into the two countries that make it up.
+        That's short of "there is a real effect," and short of "it's
+        Nigeria specifically" or "it's the Philippines specifically." The
+        most that can honestly be said is: the negative headline number
+        doesn't hold up on its own, and what replaces it is a small,
+        cohort-level signal that hasn't yet survived every check run
+        against it.
+      </p>
     </section>
 
     <section id="what-this-is-not">
